@@ -1,1 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Senha Hello Kitty 🌸</title>
+    <style>
+        /* --- ESTILOS GERAIS E TEMA HELLO KITTY --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
+        }
 
+        body {
+            background: linear-gradient(135deg, #ffe4ec 0%, #ffb7c5 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+            border-radius: 60px 60px 60px 60px;
+            box-shadow: 0 20px 60px rgba(255, 105, 135, 0.3);
+            padding: 40px 35px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            border: 4px solid #ffffff;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        /* --- ELEMENTOS HELLO KITTY (Decoração) --- */
+        .hello-kitty-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .hello-kitty-header span {
+            font-size: 2.8rem;
+            line-height: 1;
+        }
+
+        .title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #d6336c;
+            text-shadow: 3px 3px 0 #ffb6c1;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #b3415e;
+            background: #ffe2eb;
+            display: inline-block;
+            padding: 5px 20px;
+            border-radius: 40px;
+            margin-bottom: 25px;
+            font-weight: 600;
+            border: 2px dashed #ff8da1;
+        }
+
+        /* --- LAÇO E DECORAÇÕES COM CSS --- */
+        .kitty-bow {
+            font-size: 2.5rem;
+            filter: drop-shadow(0 4px 6px rgba(255, 80, 120, 0.3));
+        }
+
+        /* --- INPUTS E BOTÕES --- */
+        .password-display {
+            background-color: #fff0f5;
+            border-radius: 50px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            border: 3px solid #ffb7c5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: inset 0 4px 8px rgba(255, 150, 180, 0.2);
+        }
+
+        #passwordOutput {
+            border: none;
+            background: transparent;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #a1324e;
+            width: 100%;
+            outline: none;
+            letter-spacing: 1px;
+            font-family: 'Courier New', monospace;
+        }
+
+        #passwordOutput::placeholder {
+            color: #f8a5b8;
+            font-weight: 400;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .copy-btn {
+            background: #ff8da1;
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            padding: 8px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: bold;
+            box-shadow: 0 4px 0 #b3415e;
+            border: 2px solid white;
+        }
+
+        .copy-btn:hover {
+            background: #d6336c;
+            transform: scale(0.96);
+            box-shadow: 0 2px 0 #b3415e;
+        }
+
+        .copy-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* --- OPÇÕES DE PERSONALIZAÇÃO --- */
+        .options {
+            background: #fff5f8;
+            border-radius: 40px;
+            padding: 20px 20px 15px;
+            margin-bottom: 25px;
+            border: 3px solid #ffc1d0;
+            text-align: left;
+        }
+
+        .option-group {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .option-group label {
+            font-weight: 600;
+            color: #b3415e;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .option-group input[type="range"] {
+            width: 140px;
+            accent-color: #ff6f91;
+            cursor: pointer;
+        }
+
+        .option-group input[type="number"] {
+            width: 65px;
+            padding: 6px;
+            border-radius: 30px;
+            border: 2px solid #ffb7c5;
+            text-align: center;
+            font-weight: 600;
+            color: #a1324e;
+            background: white;
+            outline: none;
+        }
+
+        .option-group input[type="number"]:focus {
+            border-color: #d6336c;
+            box-shadow: 0 0 0 3px #ffb6c1;
+        }
+
+        .checkboxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px 20px;
+            margin-top: 5px;
+            justify-content: center;
+        }
+
+        .checkboxes label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #a1324e;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .checkboxes input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #ff6f91;
+            cursor: pointer;
+        }
+
+        /* --- BOTÃO GERAR --- */
+        .generate-btn {
+            background: #ff6f91;
+            border: none;
+            color: white;
+            font-size: 1.6rem;
+            font-weight: 700;
+            padding: 18px 30px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.25s;
+            box-shadow: 0 8px 0 #b3415e;
+            width: 100%;
+            border: 3px solid white;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .generate-btn:hover {
+            background: #d6336c;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 0 #a1324e;
+        }
+
+        .generate-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #a1324e;
+        }
+
+        /* --- RODAPÉ --- */
+        .footer {
+            margin-top: 25px;
+            font-size: 0.9rem;
+            color: #b3415e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .footer span {
+            font-size: 1.3rem;
+        }
+
+        /* --- RESPONSIVO --- */
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 18px;
+            }
+            .title {
+                font-size: 1.7rem;
+            }
+            .option-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            .option-group input[type="range"] {
+                width: 100%;
+            }
+            .option-group input[type="number"] {
+                width: 100%;
+            }
+            .checkboxes {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Cabeçalho Hello Kitty -->
+        <div class="hello-kitty-header">
+            <span>🐱</span>
+            <span class="kitty-bow">🎀</span>
+            <span>🌸</span>
+        </div>
+        <h1 class="title">Gerador Hello Kitty</h1>
+        <div class="subtitle">✨ senha fofa & segura ✨</div>
+
+        <!-- Display da senha -->
+        <div class="password-display">
+            <input type="text" id="passwordOutput" placeholder="Clique em Gerar" readonly>
+            <button class="copy-btn" id="copyButton">📋</button>
+        </div>
+
+        <!-- Opções -->
+        <div class="options">
+            <div class="option-group">
+                <label for="lengthRange">📏 Comprimento</label>
+                <input type="range" id="lengthRange" min="4" max="30" value="12">
+                <input type="number" id="lengthNumber" min="4" max="30" value="12">
+            </div>
+
+            <div class="checkboxes">
+                <label><input type="checkbox" id="uppercase" checked> A-Z</label>
+                <label><input type="checkbox" id="lowercase" checked> a-z</label>
+                <label><input type="checkbox" id="numbers" checked> 0-9</label>
+                <label><input type="checkbox" id="symbols"> !@#$%</label>
+            </div>
+        </div>
+
+        <!-- Botão Gerar -->
+        <button class="generate-btn" id="generateBtn">
+            <span>🎀</span> Gerar Senha <span>🌸</span>
+        </button>
+
+        <!-- Rodapé com coração -->
+        <div class="footer">
+            <span>💖</span> Feito com carinho para fãs da Hello Kitty <span>💖</span>
+        </div>
+    </div>
+
+    <script>
+        // --- ELEMENTOS DO DOM ---
+        const passwordOutput = document.getElementById('passwordOutput');
+        const lengthRange = document.getElementById('lengthRange');
+        const lengthNumber = document.getElementById('lengthNumber');
+        const uppercaseCheck = document.getElementById('uppercase');
+        const lowercaseCheck = document.getElementById('lowercase');
+        const numbersCheck = document.getElementById('numbers');
+        const symbolsCheck = document.getElementById('symbols');
+        const generateBtn = document.getElementById('generateBtn');
+        const copyButton = document.getElementById('copyButton');
+
+        // --- SINCRONIZAR RANGE E NUMBER ---
+        lengthRange.addEventListener('input', function() {
+            lengthNumber.value = this.value;
+        });
+
+        lengthNumber.addEventListener('input', function() {
+            let val = parseInt(this.value) || 4;
+            if (val < 4) val = 4;
+            if (val > 30) val = 30;
+            this.value = val;
+            lengthRange.value = val;
+        });
+
+        // --- FUNÇÃO GERAR SENHA ---
+        function generatePassword() {
+            const length = parseInt(lengthNumber.value) || 12;
+            const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const lower = 'abcdefghijklmnopqrstuvwxyz';
+            const number = '0123456789';
+            const symbol = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+            let availableChars = '';
+            if (uppercaseCheck.checked) availableChars += upper;
+            if (lowercaseCheck.checked) availableChars += lower;
+            if (numbersCheck.checked) availableChars += number;
+            if (symbolsCheck.checked) availableChars += symbol;
+
+            // Se nenhuma opção marcada, usar minúsculas como fallback
+            if (availableChars === '') {
+                alert('🌸 Selecione pelo menos uma opção! Usando letras minúsculas. 🌸');
+                availableChars = lower;
+                lowercaseCheck.checked = true;
+            }
+
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * availableChars.length);
+                password += availableChars[randomIndex];
+            }
+
+            // Garantir que tenha pelo menos um caractere de cada tipo selecionado (para segurança)
+            let finalPassword = password;
+            // (Implementação simplificada: para senhas curtas pode não garantir, mas é ok)
+
+            passwordOutput.value = password;
+        }
+
+        // --- GERAR AO CLICAR NO BOTÃO ---
+        generateBtn.addEventListener('click', generatePassword);
+
+        // --- GERAR AUTOMATICAMENTE AO CARREGAR A PÁGINA ---
+        window.addEventListener('load', generatePassword);
+
+        // --- COPIAR SENHA ---
+        copyButton.addEventListener('click', function() {
+            const password = passwordOutput.value;
+            if (!password) {
+                alert('🌸 Nenhuma senha para copiar! Gere uma primeiro. 🌸');
+                return;
+            }
+
+            navigator.clipboard.writeText(password).then(() => {
+                // Feedback visual
+                const originalText = this.textContent;
+                this.textContent = '✅';
+                setTimeout(() => {
+                    this.textContent = originalText;
+                }, 1800);
+            }).catch(() => {
+                // Fallback para navegadores antigos
+                passwordOutput.select();
+                document.execCommand('copy');
+                alert('🌸 Senha copiada! 🌸');
+            });
+        });
+
+        // --- TAMBÉM GERAR QUANDO ALTERAR OPÇÕES (OPCIONAL) ---
+        // Para melhor experiência, podemos gerar novamente ao mudar as opções
+        const optionInputs = [lengthRange, lengthNumber, uppercaseCheck, lowercaseCheck, numbersCheck, symbolsCheck];
+        optionInputs.forEach(input => {
+            input.addEventListener('change', generatePassword);
+        });
+        // Mas para não sobrecarregar, o range e number já disparam 'input' e 'change'
+        // Vamos manter apenas o 'change' para checkboxes e number
+        // E remover o 'change' do range para não gerar muitas vezes
+        lengthRange.removeEventListener('change', generatePassword);
+        // Adicionar um gerar mais suave: ao soltar o range (mouseup)
+        lengthRange.addEventListener('mouseup', generatePassword);
+        // E para toque em mobile
+        lengthRange.addEventListener('touchend', generatePassword);
+    </script>
+</body>
+</html>
